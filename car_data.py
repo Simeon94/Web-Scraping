@@ -10,6 +10,7 @@ import json
 import csv
 import time
 
+#Customized options for Chrome
 options = webdriver.ChromeOptions()
 options.add_argument('start-maximized')
 options.add_argument('disable-infobars')
@@ -23,7 +24,7 @@ page = 1
 
 cars_data = []
 
-
+#Web address and accept cookies option
 URL = 'https://www.ebay.co.uk/b/Cars/9801/bn_1839037?page={page}'
 driver.get(URL)
 time.sleep(3)
@@ -38,30 +39,29 @@ print(page_link)
 page_num = len(page_link)
 print(page_num)
 
-# while True:
-
+#Grab the pages in the page container
 for page in range(page_num):
 
     time.sleep(5)
-    # div_tag = driver.find_element_by_xpath('//div[@id="mainContent"]')
+
     try:
 
         wait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@id='mainContent']")))
     except:
         driver.forward()
 
-    #div_tag = driver.find_element_by_xpath("//div[@id='mainContent']")
+
     time.sleep(2)
 
-    #section_tag = driver.find_element_by_xpath('//*[@id="s0-27_2-9-0-1[0]-0-1"]')
     ul_tag = driver.find_element_by_xpath('//*[@id="s0-27_2-9-0-1[0]-0-1"]/ul')
     cars = ul_tag.find_elements_by_xpath(".//li")
     car_numbers = len(cars)
     print(car_numbers)
 
+    #Grab cars from car containers
     for j in range(car_numbers):
 
-        # time.sleep(3)
+
         try:
 
             wait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@id='mainContent']")))
@@ -155,11 +155,15 @@ for page in range(page_num):
         print(car_data)
         driver.back()
         time.sleep(2)
+
+        #Append car_data dictionary into the cars-data; List of a dictionary
         cars_data.append(car_data)
 
+    #Dump data into a json file
     with open("cars_data.json", "w") as f:
         json.dump(cars_data, f)
 
+    # Dump data into a csv file; no results were
     with open("cars_data.csv", 'w+', newline ='') as f:
         write = csv.writer(f)
         write.writerows(cars_data)
