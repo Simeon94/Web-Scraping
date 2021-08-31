@@ -6,6 +6,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 import selenium.common.exceptions as exception
+from psycopg2._psycopg import
 import json
 import csv
 import time
